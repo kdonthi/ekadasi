@@ -1,13 +1,8 @@
-#3rd waxing gibbous or 3rd waning crescent
 import ics.alarm
-import numpy as np
 import moon
 import datetime
 import decimal
 from ics import Calendar, Event
-import pytz
-#Get all dates that moon is in the third waxing gibbous or in the third waning crescent
-#write those dates to an ics file
 
 dec = decimal.Decimal
 
@@ -20,6 +15,7 @@ new_moon_counter = 0
 for date in dates_this_year:
     pos = moon.position(date)
 
+    #found that the rising ekadasi is around a moon phase of 0.35 and waning ekadasi is around 0.85
     rising_diff = abs(pos - dec(0.35))
     waning_diff = abs(pos - dec(0.85))
 
@@ -37,15 +33,6 @@ for date in dates_this_year:
         sorted_list = sorted(in_range_list, key=lambda x: x[1])
         ekadashi_dates_list.append(sorted_list[0][0])
         in_range_list.clear()
-    """
-    if phase == "New Moon":
-        new_moon_counter += 1
-        if new_moon_counter == 3:
-            ekadashi_dates_list.append(date + datetime.timedelta(hours=259.86))
-            ekadashi_dates_list.append(date + datetime.timedelta(hours=614.22))
-            new_moon_counter = 0
-    """
-    #print(date, pos, moon.phase(pos))
 
 cal = Calendar()
 
@@ -63,7 +50,3 @@ for date in ekadashi_dates_list:
 
 with open("cal.ics", "w") as cal_obj:
     cal_obj.writelines(cal)
-
-#print(ekadashi_dates_list)
-#for date in ekadashi_dates_list:
-    #print(date)
